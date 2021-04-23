@@ -1,0 +1,21 @@
+  routing-policy {
+        prefix-set  {{ routing_policy.prefix_set_name }} {
+            prefix {{ routing_policy.prefix_set_ip }} mask-length-range 8..32 {
+            }
+        }
+        policy {{ routing_policy.policy_name }} {
+                default-action {
+                    reject {
+                    }
+                }
+                statement 10 {
+                    match {
+                        prefix-set {{ routing_policy.prefix_set_name }}
+                    }
+                    action {
+                        accept {
+                        }
+                    }
+                }
+        }
+  }

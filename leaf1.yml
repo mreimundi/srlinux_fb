@@ -1,0 +1,28 @@
+interfaces:
+  - name: ethernet-1/1
+    index: 0
+    ipv4_address_prefix: 10.1.1.1/31
+  - name: ethernet-1/2
+    index: 0
+    ipv4_address_prefix: 10.2.1.1/31
+  - name: lo0
+    index: 0
+    ipv4_address_prefix: 100.0.2.1/32
+
+routing_policy:
+     prefix_set_name: loopbacks
+     prefix_set_ip: 100.0.0.0/8
+     policy_name: export-loopbacks
+
+bgp:
+  local_as: 65001
+  router_id: 100.0.2.1
+  peer_group : spines
+
+bgp_neighbors:
+  - neighbor_ip : 10.1.1.0
+    peer_group : spines
+    remote_as: 64999
+  - neighbor_ip : 10.2.1.0
+    peer_group : spines
+    remote_as: 64999

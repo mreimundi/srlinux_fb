@@ -1,0 +1,40 @@
+--- # template example
+- hosts: localhost
+  gather_facts: no
+  become: yes
+  vars:
+    node_name: spine2
+
+  tasks:
+    - name: Deleting confif file
+      file:
+        path: /root/srlinux_fb/{{ node_name }}/{{ node_name }}.cfg
+        state: absent
+
+    - name: Configuring interface block for {{ node_name }}
+      template:
+        src: interface_template.j2
+        dest: /root/srlinux_fb/{{ node_name }}/{{ node_name }}_interface.cfg
+
+    - name: Configuring network block for {{ node_name }}
+      template:
+        src: network_instance_template.j2
+        dest: /root/srlinux_fb/{{ node_name }}/{{ node_name }}_network_instance.cfg
+
+    - name: Configuring policy block for {{ node_name }}
+      template:
+        src: routing_policy_template.j2
+        dest: /root/srlinux_fb/{{ node_name }}/{{ node_name }}_routing_policy.cfg
+
+    - name: Configuring bgp block for {{ node_name }}
+      template:
+        src: bgp_template.j2
+        dest: /root/srlinux_fb/{{ node_name }}/{{ node_name }}_bgp.cfg
+
+    - name: Create {{ node_name }}.cfg
+      file:
+        path: /root/srlinux_fb/{{ node_name }}/{{ node_name }}.cfg
+        state: touch
+
+    - name: Creatinting final config for {{ node_name }}
+      script: /root/srlinux_fb/{{ node_name }}_merge.sh

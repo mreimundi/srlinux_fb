@@ -1,0 +1,12 @@
+{% for interface in interfaces %}
+    interface {{ interface.name }} {
+        admin-state enable
+        subinterface {{ interface.index }} {
+            admin-state enable
+            ipv4 {
+                address {{ interface.ipv4_address_prefix }} {
+                }
+            }
+        }
+    }
+{% endfor %}

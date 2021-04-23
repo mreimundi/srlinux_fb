@@ -1,0 +1,9 @@
+network-instance default {
+    type default
+    admin-state enable
+{% for interface in interfaces %}
+    interface {{ interface.name }}.{{ interface.index }} {
+    }
+{% endfor %}
+
+}
